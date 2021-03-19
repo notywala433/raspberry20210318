@@ -14,7 +14,16 @@ Page {
 
 
     title: qsTr("Home")
+    Keys.onPressed: {
 
+
+     Qt.quit()
+        event.accepted = true
+
+
+
+
+    }
     header: ToolBar{
 
                     height:60
