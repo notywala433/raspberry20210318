@@ -1,0 +1,179 @@
+#include "relay.h"
+#include<QtSerialPort/QSerialPortInfo>
+#include<QDebug>
+#include <QObject>
+#include<QThread>
+#include<wiringPi.h>
+void Relay::consoleprint( void ){
+
+    qDebug()<<"Coin inserted";
+
+}
+Relay::Relay(QObject *parent) : QObject(parent)
+{
+    port = new QSerialPort;
+    port->setBaudRate(QSerialPort::Baud9600,QSerialPort::Direction());
+    //port->open(QSerialPort::ReadWrite);
+    info = new QSerialPortInfo;
+    port->setDataBits(QSerialPort::Data8);
+    port->setFlowControl(QSerialPort::NoFlowControl);
+    port->setParity(QSerialPort::NoParity);
+    port->setStopBits(QSerialPort::OneStop);
+    port->setPortName("ttyS0");
+     port->open(QSerialPort::ReadWrite);
+     wiringPiSetup();
+     pinMode(22,OUTPUT);
+    pinMode(23,OUTPUT);
+    pinMode(24,OUTPUT);
+    pinMode(25,OUTPUT);
+
+     openHex = new QByteArray[25];
+      *(openHex+0) = QByteArray::fromHex("8A 01 00 11 9A");
+   *(openHex+1)= QByteArray::fromHex("8A 01 01 11 9B");
+    *(openHex+2)=QByteArray::fromHex("8A 01 02 11 98");
+     *(openHex+3)=QByteArray::fromHex("8A 01 03 11 99");
+     *(openHex+4) =QByteArray::fromHex("8A 01 04 11 9E");
+     *(openHex+5)= QByteArray::fromHex("8A 01 05 11 9F");
+     *(openHex+6) =QByteArray::fromHex("8A 01 06 11 9C");
+     *(openHex+7)=QByteArray::fromHex("8A 01 07 11 9D");
+
+     *(openHex+8) =QByteArray::fromHex("8A 01 08 11 92");
+
+     *(openHex+9) =QByteArray::fromHex("8A 01 09 11 93");
+
+     *(openHex+10)=QByteArray::fromHex("8A 01 0A 11 90");
+
+     *(openHex+11) =QByteArray::fromHex("8A 01 0B 11 91");
+
+     *(openHex+12) =QByteArray::fromHex("8A 01 0C 11 96");
+
+     *(openHex+13) =QByteArray::fromHex("8A 01 0D 11 97");
+
+     *(openHex+14) =QByteArray::fromHex("8A 01 0E 11 94");
+     *(openHex+15) =QByteArray::fromHex("8A 01 0F 11 95");
+
+     *(openHex+16) =QByteArray::fromHex("8A 01 10 11 8A");
+
+     *(openHex+17) =QByteArray::fromHex("8A 01 11 11 8B");
+
+     *(openHex+18) =QByteArray::fromHex("8A 01 12 11 88");
+
+     *(openHex+19) =QByteArray::fromHex("8A 01 13 11 89");
+
+     *(openHex+20) =QByteArray::fromHex("8A 01 14 11 8E");
+
+     *(openHex+21) =QByteArray::fromHex("8A 01 15 11 8F");
+
+    *(openHex+22) =QByteArray::fromHex("8A 01 16 11 8C");
+
+     *(openHex+23) =QByteArray::fromHex("8A 01 17 11 8D");
+
+     *(openHex+24) =QByteArray::fromHex("8A 01 18 11 82");
+        port->setParent(this);
+
+     for (int i =0;i<25;i++) {
+
+
+     channel[i].setHex(openHex[i]);
+     channel[i].setNumber(i);
+
+
+ }
+}
+
+void Relay::openAllChannels()
+{   //port = new QSerialPort;
+
+
+     QByteArray myHexArray = QByteArray::fromHex("8A 01 00 11 9A");
+
+     qDebug()<<"Opening all chanells";
+     port->write(myHexArray);
+
+
+
+
+
+}
+
+void Relay::openChannel(int a)
+{
+ port->write(channel[a].getHex());
+qDebug()<<channel[a].getHex();
+qDebug()<<"Cabinet number: "<<channel[a].getNumber()<<" is opened";
+qDebug()<<"Data from the serial port  :"<<port->readAll();
+
+}
+
+QStringList Relay::availablePorts()
+
+{   QStringList list ;
+    for(int i = 0;i <info->availablePorts().size();i++)
+    {
+    QList<QSerialPortInfo> object = info->availablePorts();
+    list.append(object[i].portName());}
+
+    return list;
+
+}
+
+void Relay::setPort(QString a)
+{
+ port->setPortName(a);
+ qDebug()<<port->portName();
+}
+
+void Relay::chargeAllOn()
+{
+    digitalWrite(22,1);
+    digitalWrite(23,1);
+    digitalWrite(24,1);
+    digitalWrite(25,1);
+}
+
+void Relay::chargeCabinetOn(int a)
+{
+   
+    switch (a) {
+    case 1 : digitalWrite(22,1); break;
+            
+    case 2 : digitalWrite(23,1); break;
+            
+    case 3 : digitalWrite(24,1); break;
+            
+    case 4 : digitalWrite(25,1); break;
+
+    }
+}
+
+void Relay::chargeCabinetOff(int a)
+{
+    switch (a) {
+    
+    case 1 : digitalWrite(22,0); break;
+        
+    case 2 : digitalWrite(23,0); break;
+        
+    case 3 : digitalWrite(24,0); break;
+        
+    case 4 : digitalWrite(25,0); break;
+
+    }
+}
+
+void Relay::chargeAllOff()
+{
+    digitalWrite(22,0);
+    
+    digitalWrite(23,0);
+    
+    digitalWrite(24,0);
+    
+    digitalWrite(25,0);
+}
+
+void Relay::printSerialData(QByteArray a)
+{
+ qDebug()<<QString::fromStdString(a.toStdString());
+}
+

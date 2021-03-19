@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>model/Model.qml</file>
+        <file>model/Logic.qml</file>
+        <file>pages/Home.qml</file>
+        <file>model/Components.qml</file>
+        <file>pages/PasswordPage.qml</file>
+        <file>pages/Retrieve.qml</file>
+    </qresource>
+</RCC>
