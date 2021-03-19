@@ -16,7 +16,7 @@
 #include<wiringPi.h>
 #include<QQmlContext>
 #include<QDebug>
-
+#include"mytcpserver.h"
 
 
 int main(int argc, char *argv[])
@@ -25,11 +25,12 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    MyTcpServer server;
 
    
 
     Relay relay;
-
+server.setSerialport(relay.getSerialport());
 
 
 

@@ -17,6 +17,7 @@ SOURCES += \
         channel.cpp \
         gpio.cpp \
         main.cpp \
+        mytcpserver.cpp \
         relay.cpp
 
 RESOURCES += qml.qrc
@@ -33,6 +34,7 @@ INSTALLS += target
 
 HEADERS += \
     channel.h \
+    mytcpserver.h \
     relay.h \
     wiringPi.h
 LIBS += -lwiringPi

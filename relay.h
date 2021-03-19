@@ -17,7 +17,9 @@ public:
     Q_INVOKABLE void chargeCabinetOn(int a);
     Q_INVOKABLE void chargeCabinetOff(int a);
     Q_INVOKABLE void chargeAllOff();
+    Q_INVOKABLE QString getLocalip();
     void (consoleprint)(void);
+    QSerialPort* getSerialport();
 signals:
 
 public slots:

@@ -4,10 +4,22 @@
 #include <QObject>
 #include<QThread>
 #include<wiringPi.h>
-void Relay::consoleprint( void ){
+#include<QTcpSocket>
+#include<QHostAddress>
+#include<QHostInfo>
+#include<QNetworkInterface>
+void Relay::consoleprint(void){
+    qDebug()<<"coin inserted " ;
+    
+}
 
-    qDebug()<<"Coin inserted";
+QSerialPort *Relay::getSerialport()
+{
+    return port;
+}
+void (print)(void){
 
+    qDebug()<<"coin inserted " ;
 }
 Relay::Relay(QObject *parent) : QObject(parent)
 {
@@ -26,7 +38,8 @@ Relay::Relay(QObject *parent) : QObject(parent)
     pinMode(23,OUTPUT);
     pinMode(24,OUTPUT);
     pinMode(25,OUTPUT);
-
+    pinMode(0,INPUT);
+    wiringPiISR(0,INT_EDGE_BOTH,print);
      openHex = new QByteArray[25];
       *(openHex+0) = QByteArray::fromHex("8A 01 00 11 9A");
    *(openHex+1)= QByteArray::fromHex("8A 01 01 11 9B");
@@ -172,8 +185,17 @@ void Relay::chargeAllOff()
     digitalWrite(25,0);
 }
 
+QString Relay::getLocalip()
+{   QNetworkInterface *info = new QNetworkInterface;
+
+
+
+    qDebug()<<info->allAddresses()[3];
+                return  info->allAddresses()[3].toString();
+}
+
 void Relay::printSerialData(QByteArray a)
 {
- qDebug()<<QString::fromStdString(a.toStdString());
+    qDebug()<<QString::fromStdString(a.toStdString());
 }
 

@@ -40,17 +40,30 @@ Page {
                     }
 
                     Text {
-                       id: name
+                        id: name
 
-                       anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
 
-                       anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenter: parent.verticalCenter
 
-                    }
+                     }
+
 
 
     }
+    footer:ToolBar{
+        height:60
 
+        background: Rectangle{color: "white"}
+        Text {
+            id: nameIp
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            anchors.verticalCenter: parent.verticalCenter
+            text:controller.getLocalip()
+         }
+    }
 
     background: Rectangle {
 
