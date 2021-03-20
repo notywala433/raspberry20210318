@@ -48,6 +48,7 @@ Page {
                        fillMode: Image.PreserveAspectFit
                     }
 
+
                     Text {
                         id: name
 
@@ -56,8 +57,22 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
 
                      }
+                     //Close button
+                    Rectangle{
+                    height: 20
+                    width: 20
+                    x: parent.width-20
+                    Text {
+                        id: quit
+                        text: qsTr("X")
 
+                    }
+                    MouseArea{
+                    anchors.fill: parent
+                    onClicked: Qt.quit()
+                    }
 
+                    }
 
     }
     footer:ToolBar{
