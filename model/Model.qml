@@ -97,7 +97,7 @@ Item {
                                                                     var cabinet = tx.executeSql("select * from Cabinet")
 
                                                                     // If the rows on the database are less than the numberOfCabinets variable then add more rows
-
+                                                                    console.log(cabinet.rows[0].Occupied)
                                                                         if(cabinet.rows.length < numberOfCabinets)
                                                                         {
                                                                                 for(var i =1; i<=numberOfCabinets;i++)
@@ -116,7 +116,38 @@ Item {
             controller.openChannel(cabinet)
 
         }
+        // Clear all passwords
 
+       function clearAllPasswords(){
+
+           db.transaction(
+                           function(tx){
+
+                                           // If the database doesnt exist, create one!
+                                           tx.executeSql('CREATE TABLE IF NOT EXISTS Cabinet(cabinetNo INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,passwd VARCHAR,Occupied BOOLEAN,Charging BOOLEAN)')
+
+                                           // Uncomment if you want to delete the table
+
+                                           // tx.executeSql('Drop table Cabinet')
+
+                                           // Find all records
+
+                                           var cabinet = tx.executeSql("select * from Cabinet")
+
+                                           // If the rows on the database are less than the numberOfCabinets variable then add more rows
+                                           console.log(cabinet.rows[0].Occupied)
+
+                                                       for(var i =1; i<=numberOfCabinets;i++)
+                                                       {
+
+                                                         tx.executeSql('UPDATE Cabinet SET Occupied = ? WHERE cabinetNo= ?;',[0,i])
+
+                                                         controller.openAllChannels()
+                                                       }})
+
+
+
+       }
        // Open rented cabinet with Password
 
         function openCabinetWithPaswd(cabinet,passwd){
@@ -295,5 +326,6 @@ Item {
     onAllCabinetsEmpty:allEmpty()
 
     onWrongPassword: failedAuth()
+    onClearAllpasswords: _.clearAllPasswords()
     }
 }

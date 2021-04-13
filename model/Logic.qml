@@ -21,4 +21,6 @@ Item {
     signal availableCabinet(var a)
 
     signal allCabinetsEmpty()
+
+    signal clearAllpasswords()
     }

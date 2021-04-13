@@ -46,6 +46,16 @@ Page {
                        source: model.imageUrl
 
                        fillMode: Image.PreserveAspectFit
+                       Rectangle{
+                           width: imageImg.width
+                           height: imageImg.height
+                           x:30
+                           color: "transparent"
+                       MouseArea{
+                       anchors.fill: parent
+                       onClicked:logic.clearAllpasswords()
+
+                       }}
                     }
 
 
